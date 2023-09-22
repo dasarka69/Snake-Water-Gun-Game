@@ -1,0 +1,68 @@
+function computerPlay() {
+  const choices = ['S', 'W', 'G'];
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  return choices[randomIndex];
+}
+
+function playGame(playerChoice, computerChoice) {
+  if (playerChoice === computerChoice) {
+    return 'tie';
+  } else if (
+    (playerChoice === 'S' && computerChoice === 'W') ||
+    (playerChoice === 'W' && computerChoice === 'G') ||
+    (playerChoice === 'G' && computerChoice === 'S')
+  ) {
+    return 'win';
+  } else {
+    return 'lose';
+  }
+}
+
+function startGame() {
+  const messages = {
+    welcome: "Enter 'S' for Snake, 'W' for Water, or 'G' for Gun (or press Cancel to exit):",
+    invalidChoice: 'Invalid choice. Please enter S, W, or G.',
+    win: 'You win! Your choice beats computer choice.',
+    lose: 'You lose! Computer choice beats your choice.',
+    tie: "It's a tie! You both chose the same."
+  };
+
+  while (true) {
+    let playerInput = prompt(messages.welcome);
+
+    if (playerInput === null) {
+      const confirmExit = confirm('Are you sure you want to exit the game?');
+      if (confirmExit) {
+        break;
+      }
+    }
+
+    playerInput = playerInput ? playerInput.toUpperCase() : '';
+
+    if (!['S', 'W', 'G'].includes(playerInput)) {
+      alert(messages.invalidChoice);
+    } else {
+      const computerChoice = computerPlay();
+      const result = playGame(playerInput, computerChoice);
+
+      switch (result) {
+        case 'win':
+          alert(messages.win + ` (You: ${playerInput}, Computer: ${computerChoice})`);
+          break;
+        case 'lose':
+          alert(messages.lose + ` (You: ${playerInput}, Computer: ${computerChoice})`);
+          break;
+        case 'tie':
+          alert(messages.tie + ` (${playerInput})`);
+          break;
+      }
+
+      const playAgain = confirm('Do you want to play again?');
+      if (!playAgain) {
+        break;
+      }
+    }
+  }
+}
+
+startGame();
